@@ -1,3 +1,4 @@
+For more details pleases contact me via e-mail : io_nico_11@yahoo.com 
 <p align="center"><img src="https://laravel.com/assets/img/components/logo-laravel.svg"></p>
 
 <p align="center">
