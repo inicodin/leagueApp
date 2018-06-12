@@ -29,7 +29,7 @@
                             <label for="password" class="col-md-4 col-form-label text-md-right"><i class="fa fa-key" aria-hidden="true"></i></label>
 
                             <div class="col-md-6">
-                                <input id="password" dtype="password" placeholder="Password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" name="password" required>
+                                <input id="password" type="password" placeholder="Password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" name="password" required>
 
                                 @if ($errors->has('password'))
                                     <span class="invalid-feedback">
