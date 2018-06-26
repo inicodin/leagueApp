@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Player;
 use App\Post;
 use App\Game;
+use App\Infogame;
 use DB;
 
 class GameController extends Controller
@@ -60,9 +61,7 @@ class GameController extends Controller
      $value = $request->get('value');
      $dependent = $request->get('dependent');
      $data = Post::join('sports','posts.idsport','=','sports.idsport')
-        ->where($select,'!=',$value)
-        //->where('posts.idsport','=',"select max(idsport) from posts where id='$value'")
-       // ->where('posts.id','!=',$dependent)
+     ->whereRaw("case when $select=posts.idsport then $select=$value else posts.idsport in (select idsport from posts where id=$value) and id <> $value end ")
        ->get();
        
        $output = '<option>-Select-</option>';
@@ -73,6 +72,22 @@ class GameController extends Controller
      echo $output;
     }
 
+    function dropdownplayer(Request $request)
+    {
+     $select = $request->get('select');
+     $value = $request->get('value');
+     $dependent = $request->get('dependent');
+     $data = Player::join('posts','posts.id','=','players.idteam')
+     ->whereRaw("idteam=$value")
+       ->get();
+       
+       $output = '<option>-Select-</option>';
+            foreach($data as $row)
+     {
+      $output .= '<option value="'.$row->idplayer.'">'.$row->name.'</option>';
+     }
+     echo $output;
+    }
     /**
      * Show the form for creating a new resource.
      *
@@ -105,14 +120,14 @@ class GameController extends Controller
            $game->result2 =$request->input('result2');
            $game->idsport =$request->input('idsport'); 
 
-           $game->cota1 =$request->input('cota1');
-           $game->cotax=$request->input('cotax');
-           $game->cota2 =$request->input('cota2');
+ 
            $game->data=$request->input('data');
            $game->ora=$request->input('ora');
            $game->save();
+
            
-           return redirect('/games')->with('success','Meci adaugat');
+           
+           return redirect('/events')->with('success','Meci adaugat');
     }
 
     /**
@@ -156,24 +171,30 @@ class GameController extends Controller
             'ora' => 'required'
            ]);           
 
-
            $game= Game::find($id);
            $game->idteam1=$request->input('idteam1');
            $game->result1 =$request->input('result1');
            $game->idteam2=$request->input('idteam2');
            $game->result2 =$request->input('result2');
-           $game->idsport =$request->input('idsport'); 
-
-           $game->cota1 =$request->input('cota1');
-           $game->cotax=$request->input('cotax');
-           $game->cota2 =$request->input('cota2');
+           $game->idsport =$request->input('idsport');   
            $game->data=$request->input('data');
            $game->ora=$request->input('ora');
            
            $game->save();
-           
-           return redirect('/games')->with('success','Meci modificat');
 
+    if(($request->action )!='')   
+    {    
+           foreach ($request->action as $key => $val) {
+                $newObj = new Infogame();
+                $newObj->action = $val;
+                $newObj->idplayer = $request['player'. $key];
+                $newObj->idteam = $request['team'. $key] ;
+                $newObj->idgame = $id;
+
+                $newObj->save();
+           }
+        }      
+           return redirect('/games')->with('success','Meci modificat');
     }
 
     /**

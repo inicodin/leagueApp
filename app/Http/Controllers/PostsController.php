@@ -80,7 +80,7 @@ class PostsController extends Controller
         $post= new Post;
         $post->nume=$request->input('nume');
         $post->detalii =$request->input('detalii');
-        $post->user_id='1';
+        $post->user_id=auth()->user()->id;
         $post->idsport=$request->input('idsport');
         $post->image=$fileNameToStore;
         $post->save();
@@ -154,7 +154,7 @@ class PostsController extends Controller
         ->join('posts as p', 'p.id', '=', 'games.idteam1')
         ->join('posts as t', 't.id', '=', 'games.idteam2')
         ->whereRaw("(p.id='$id' or t.id='$id') and games.result2 is not null")
-
+        ->take(5)
         ->orderby('games.data','desc')
         ->get();
         return view('posts.show')->with('post',$post)

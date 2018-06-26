@@ -59,12 +59,12 @@
     
      fetch_customer_data();
     
-     function fetch_customer_data(query = '')
+     function fetch_customer_data(query = '',type='')
      {
       $.ajax({
        url:"{{ route('index.action') }}",
        method:'GET',
-       data:{query:query},
+       data:{query:query,type:type},
        dataType:'json',
        success:function(data)
        {
@@ -76,9 +76,33 @@
     
      $(document).on('keyup', '#search', function(){
       var query = $(this).val();
-      fetch_customer_data(query);
+      var type = $("ul li.nav-item.active a").text();
+      fetch_customer_data(query,type);
      });
+
+     $(document).on('click', '#home-tab', function(){
+      var query = $("#search").val();
+      var type = "1";
+      fetch_customer_data(query,type);
+     });
+    
+     $(document).on('click', '#profile-tab', function(){
+      var query = $("#search").val();
+      var type = "2";
+      fetch_customer_data(query,type);
+     });
+
+     $(document).on('click', '#contact-tab', function(){
+      var query = $("#search").val();
+      var type = "3";
+      fetch_customer_data(query,type);
+     });
+
     });
+
+
+
+
     </script>
 
 

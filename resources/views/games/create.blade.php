@@ -37,9 +37,9 @@
                     <option value="{{$data->id}}" > {{$data->nume}} </option>
             @endforeach  
 </select> --}}
-<select name="idteam1" id="id" class="form-control input-lg dynamic"  data-dependent="idteam2">
+<select name="idteam1" id="id" class="form-control input-lg dynamic"  data-dependent="sport">
     <option value="">-Select-</option>
-   </select>
+</select>
 </td>
 
 <td>
@@ -49,7 +49,7 @@
                            <option value="{{$data->id}}"  > {{$data->nume}} </option>
                    @endforeach  
        </select>  --}}
-       <select name="idteam2" id="idteam2" class="form-control input-lg dynamic" >
+       <select name="idteam2" id="sport" class="form-control input-lg dynamic" >
         <option value="">-Select-</option>
        </select>
     </td>
@@ -75,56 +75,15 @@
 </td>
 </tr>
 
- {{--<tr>
-<td>
-    {{Form::text('cota1','',['class'=>'form-control','placeholder'=>'Gazde'])}} 
-</td> 
-
-<td>
-    {{Form::text('cotax','',['class'=>'form-control','placeholder'=>'Egal'])}} 
-</td> 
-
-<td>
-    {{Form::text('cota2','',['class'=>'form-control','placeholder'=>'Oaspeti'])}} 
-</td> 
-
- </tr>        --}}
 </table>
-<div align="right">
-        <input type="button" class="btn btn-lg btn-block " id="addrow" value="Add Row" />
 
-       </div>
+    </br>
 <p style='text-align:center'>{{Form::submit('Adauga',['class'=>'btn btn-primary'])}}</p>
 {{ csrf_field() }}
 {!! Form::close() !!}
 
 <script>
-$(document).ready(function () {
-    var counter = 0;
 
-    $("#addrow").on("click", function () {
-        var newRow = $("<tr>");
-        var cols = "";
-
-        cols += '<td><input type="text" class="form-control" name="name' + counter + '"/></td>';
-        cols += '<td><input type="text" class="form-control" name="mail' + counter + '"/></td>';
-
-
-        cols += '<td><input type="button" class="ibtnDel btn btn-md btn-danger "  value="Delete"></td>';
-        newRow.append(cols);
-        $("table.order-list").append(newRow);
-        counter++;
-    });
-
-
-
-    $("table.order-list").on("click", ".ibtnDel", function (event) {
-        $(this).closest("tr").remove();       
-        counter -= 1
-    });
-
-
-});
 
 $(document).ready(function(){
 
@@ -147,6 +106,7 @@ $(document).ready(function(){
    })
   }
  });
+
 
 });
 

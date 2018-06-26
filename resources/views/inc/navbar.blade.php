@@ -2,7 +2,7 @@
 
 <nav class="navbar navbar-expand-md navbar-dark bg-success" >
 <div class="container" >
-<a class="navbar-brand"  href="{{ url('/') }}">
+<a class="navbar-brand"  href="{{ url('/home') }}">
     {{config('app.name','LeagueApp')}}
     </a>
 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
@@ -14,21 +14,23 @@
         <a class="nav-link" href="/home">Home <span class="sr-only">(current)</span></a>
     </li>-->
     <li class="nav-item">
-        <a class="nav-link" href="/players">Jucatori </a>
-    </li>
+            <a class="nav-link" href="/events">Meciuri</a>
+            </li>
+    
     <li class="nav-item">
         <a class="nav-link" href="/games">Rezultate</a>
-    </li>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" href="/posts">Echipe</a>
     </li>
     <li class="nav-item">
         <a class="nav-link" href="/tables">Clasament</a>
         </li>
-        {{-- <li class="nav-item">
-            <a class="nav-link" href="/bets">Pariuri</a>
-            </li> --}}
+    <li class="nav-item">
+        <a class="nav-link" href="/posts">Echipe</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="/players">Jucatori </a>
+    </li>
+    
+        
     </ul>
     <ul class="navbar-nav ml-auto">
         <!-- Authentication Links -->
@@ -36,17 +38,19 @@
             <li><a class="nav-link" href="{{ route('login') }}">{{ __('Autentificare') }}</a></li>
             <li><a class="nav-link" href="{{ route('register') }}">{{ __('Inregistrare') }}</a></li>
         @else
-      
+        @if(!Auth::guest())
+        @if(Auth::user()->getId()=='1')
         <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   Adauga
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                   <a class="dropdown-item" href="/posts/create">Echipa</a>
-                  <a class="dropdown-item" href="/games/create">Meciuri</a>
+                  <a class="dropdown-item" href="/games/create">Meci</a>
                 </div>
               </li>
-
+         @endif
+        @endif
 
             <li class="nav-item dropdown">
                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>

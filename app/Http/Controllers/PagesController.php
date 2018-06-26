@@ -2,10 +2,16 @@
 
 namespace App\Http\Controllers;
 use DB;
+use App\User;
 use Illuminate\Http\Request;
 
 class PagesController extends Controller
 {
+    public function _construct()
+    {
+        $this->middleware('auth');
+    }
+
     public function index()
     {
         $chartdata= DB::table('posts')
@@ -33,19 +39,10 @@ class PagesController extends Controller
         ])
         ->options([]);
 
-        return view('pages.index')->with('chartjs',$chartjs);
+        //  $user_id = auth()->user()->id;
+        //  $user = User::find($user_id);
+        return view('pages.index')->with(compact('chartjs',$chartjs));
+
     }
-    public function about()
-    {
-        $title = 'About us';
-        return view('pages.about')->with('title',$title);;
-    }
-    public function services()
-    {
-        $data= array(
-            'title'=>'Servicesx',
-            'services'=>['web design','seo','prog']
-        );
-        return view('pages.services')->with($data);
-    }
+
 }

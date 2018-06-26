@@ -11,17 +11,44 @@ use App\Game;
 use App\Player;
 
 
-class BetController extends Controller
+class EventsController extends Controller
 {
     public function index()
     {
-        $games= DB::select('SELECT p1.nume as echipa1,left(g.ora,5) as hour,
-        p2.nume as echipa2,g.*
-         FROM games g  join posts p1 on g.idteam1=p1.id 
-         join posts p2 on g.idteam2=p2.id where result2 is null order by data asc');
-     return view('bets.index')->with('games',$games);
-    }
+       
+        $event=  DB::table('games')
+        ->select('p.nume as echipa1','t.nume as echipa2','games.ora as hour','games.*')
+        ->join('posts as p', 'p.id', '=', 'games.idteam1')
+        ->join('posts as t', 't.id', '=', 'games.idteam2')
+        ->where('p.idsport','=','1')
+        ->where('t.idsport','=','1')
 
+        ->whereNull('games.result2')
+        ->orderBy('games.data','desc','games.ora','desc')
+        ->paginate(5);
+        $eventb=  DB::table('games')
+        ->select('p.nume as echipa1','t.nume as echipa2','games.ora as hour','games.*')
+        ->join('posts as p', 'p.id', '=', 'games.idteam1')
+        ->join('posts as t', 't.id', '=', 'games.idteam2')
+        ->where('p.idsport','=','2')
+        ->where('t.idsport','=','2')
+
+        ->whereNull('games.result2')
+        ->orderBy('games.data','desc','games.ora','desc')
+        ->paginate(5);
+        $eventh=  DB::table('games')
+        ->select('p.nume as echipa1','t.nume as echipa2','games.ora as hour','games.*')
+        ->join('posts as p', 'p.id', '=', 'games.idteam1')
+        ->join('posts as t', 't.id', '=', 'games.idteam2')
+        ->where('p.idsport','=','3')
+        ->where('t.idsport','=','3')
+      
+        ->whereNull('games.result2')
+        ->orderBy('games.data','desc','games.ora','desc')
+        ->paginate(5);
+        return view('events.index')->with(compact('event',$event,'eventb',$eventb,'eventh',$eventh));
+
+    }
     /**
      * Show the form for creating a new resource.
      *
@@ -29,7 +56,7 @@ class BetController extends Controller
      */
     public function create()
     {
-        return view('bets.create');
+        return view('events.create');
     }
 
     /**
@@ -61,7 +88,7 @@ class BetController extends Controller
            $game->ora=$request->input('ora');
            $game->save();
            
-           return redirect('/bets')->with('success','Meci adaugat');
+           return redirect('/events')->with('success','Meci adaugat');
     }
 
     /**
@@ -85,7 +112,7 @@ class BetController extends Controller
     {
         
         $game = Game::find($id);
-        return view('bets.edit')->with('game',$game);
+        return view('events.edit')->with('game',$game);
     }
 
     /**
@@ -121,7 +148,7 @@ class BetController extends Controller
            
            $game->save();
            
-           return redirect('/bets')->with('success','Meci modificat');
+           return redirect('/events')->with('success','Meci modificat');
 
     }
 
@@ -135,6 +162,6 @@ class BetController extends Controller
     {
         $game = Game::find($id);
         $game->delete();
-        return redirect('/bets')->with('success','Eveniment anulat!');
+        return redirect('/events')->with('success','Eveniment anulat!');
     }
 }

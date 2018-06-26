@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Player;
 use App\Post;
+use App\Sport;
 use DB;
 
 class PlayerController extends Controller
@@ -43,12 +44,26 @@ class PlayerController extends Controller
      {
       $output = '';
       $query = $request->get('query');
-  
+      $type = $request->get('type');
+    $sportid=1;
+    if($type !='')
+    {
+      $sportid=$type;
+      if($type=='Baschet')
+        {$sportid=2;
+        }
+        elseif($type=='Handbal')
+        {$sportid=3;
+        }
+        elseif($type=='Fotbal')
+        {$sportid=1;
+        }
+    }
       if($query != '')
       {
+                     
          $data = Player::join('posts','idteam','=','id')
-       // ->where('age','like','%'.$query.'%')
-        ->whereRaw("(posts.idsport=1 and (name like '%$query%' or posts.nume like '%$query%' or rol like '%$query%' 
+        ->whereRaw("(posts.idsport=$sportid and (name like '%$query%' or posts.nume like '%$query%' or rol like '%$query%' 
         or TIMESTAMPDIFF(YEAR, birth, CURDATE()) like '%$query%'   ))")
         ->orderBy('posts.nume', 'asc')
         ->get();
@@ -56,11 +71,13 @@ class PlayerController extends Controller
       }
       else
       {
+          
         $data = Player::join('posts','idteam','=','id')
-        ->where('posts.idsport','=','1')
+        ->where('posts.idsport','=',$sportid)
         ->orderBy('posts.nume', 'asc')
         ->get();
       }
+    
      $counter=0;
       $total_row = $data->count();
       if($total_row > 0)

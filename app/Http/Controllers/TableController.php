@@ -63,7 +63,7 @@ class TableController extends Controller
                     SUM(Win) As won, SUM(Loss) as lost, sum(draw) as tied,
                     SUM(gol_marcat) as gol_marcat,
                     SUM(gol_primit) as gol_primit,
-                    3*SUM(Win)+1*sum(draw) as points
+                    2*SUM(Win)+1*sum(loss) as points
                     FROM
                     ( SELECT idteam1 as team, 
                         CASE WHEN result1 > result2 THEN 1 ELSE 0 END as Win, 

@@ -14,20 +14,19 @@ Route::get('/pdf','PdfController@index');
 
 
 Route::get('/', 'PagesController@index');
-Route::get('/about', 'PagesController@about');
-Route::get('/services', 'PagesController@services');
+
 
 Route::resource('posts','PostsController');
 Route::resource('players','PlayerController');
 Route::resource('games','GameController');
- Route::resource('bets','BetController');
+ Route::resource('events','EventsController');
 Route::get('/tables', 'TableController@index');
 
 
 
 Route::get('/players/index/action', 'PlayerController@action')->name('index.action');
 Route::post('/games/create/fetch', 'GameController@fetch')->name('dynamicdependent.fetch');
-
+Route::post('/games/create/dropdownplayer', 'GameController@dropdownplayer')->name('dynamicdependent.dropdownplayer');
 
 Route::get('/bets/chart/action', 'BetController@action')->name('chart.action');
 
